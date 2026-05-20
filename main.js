@@ -108,6 +108,52 @@ TAREAS:
 - Pintar productos
 - Pintar categorías
 */
+function getProducts() {
+   
+  let url = "https://fakestoreapi.com/products";
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      renderProducts(data);
+      renderCategories(data);
+      //console.log(data);
+    })
+    .catch(error => console.error("Hubo un error en la Tienda ", error))
+   
+}
+
+function renderProducts(productsArray) {
+  const productsContainer = document.querySelector("#productsContainer");
+  productsContainer.innerHTML = "";
+  productsArray.forEach(articulo => montarProducts(articulo));
+}
+
+
+// Creamos el HTML dinámico usando los datos que nos da la API
+function montarProducts(producto) {
+  const productsContainer = document.querySelector("#productsContainer");
+  productsContainer.innerHTML += `
+      <article class="product-card">
+        <div class="product-image">
+          <img src="${producto.image}" alt="${producto.title}">
+        </div>
+        <div class="product-info">
+          <p class="product-category">${producto.category}</p>
+          <h3 class="product-title">${producto.title}</h3>
+          <p class="product-price">${producto.price}€</p>
+          <div class="card-actions">
+            <button class="add-btn">Añadir</button>
+            <button class="fav-btn">🤍</button>
+          </div>
+        </div>
+      </article>
+    `;
+
+}
+
+getProducts();
+
+
 
 
 /*
@@ -152,11 +198,11 @@ products.forEach(product => {
 */
 
 
-function getProducts(){
+//function getProducts() {
 
   // TODO
 
-}
+//}
 
 
 // ========================================
@@ -202,11 +248,11 @@ productsContainer.appendChild(card);
 */
 
 
-function renderProducts(productsArray){
+//function renderProducts(productsArray) {
 
   // TODO
 
-}
+//}
 
 
 // ========================================
@@ -226,7 +272,7 @@ PISTA:
 new Set()
 */
 
-function renderCategories(productsArray){
+function renderCategories(productsArray) {
 
   // TODO
 
@@ -256,7 +302,7 @@ PISTA:
 - localeCompare()
 */
 
-function filterProducts(){
+function filterProducts() {
 
   // TODO
 
@@ -299,7 +345,7 @@ TAREAS:
 - Renderizar carrito
 */
 
-function addToCart(id){
+function addToCart(id) {
 
   // TODO
 
@@ -311,7 +357,7 @@ OBJETIVO:
 Eliminar producto del carrito.
 */
 
-function removeFromCart(id){
+function removeFromCart(id) {
 
   // TODO
 
@@ -329,7 +375,7 @@ MOSTRAR:
 - Total carrito
 */
 
-function renderCart(){
+function renderCart() {
 
   // TODO
 
@@ -355,7 +401,7 @@ PISTA:
 JSON.stringify()
 */
 
-function saveCart(){
+function saveCart() {
 
   // TODO
 
@@ -370,7 +416,7 @@ PISTA:
 JSON.parse()
 */
 
-function loadCart(){
+function loadCart() {
 
   // TODO
 
@@ -399,14 +445,14 @@ TAREAS:
 - Recuperar favoritos
 */
 
-function toggleFavorite(id){
+function toggleFavorite(id) {
 
   // TODO
 
 }
 
 
-function loadFavorites(){
+function loadFavorites() {
 
   // TODO
 
@@ -479,7 +525,7 @@ TAREAS:
 - Mostrar login si no existe
 */
 
-function checkSession(){
+function checkSession() {
 
   // TODO
 
@@ -495,7 +541,7 @@ TAREAS:
 - Cerrar modal
 */
 
-function logout(){
+function logout() {
 
   // TODO
 
@@ -573,7 +619,7 @@ TAREAS:
 - Comprobar sesión
 */
 
-function init(){
+function init() {
 
   // TODO
 
