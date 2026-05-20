@@ -66,13 +66,13 @@ const closeLogin =
 const loginForm =
   document.getElementById("loginForm");
 
-
+const card = document.createElement("product-card");
 // ========================================
 // VARIABLES GLOBALES
 // ========================================
 
 // Productos API
-let products = [];
+//let products = [];
 
 // Productos filtrados
 let filteredProducts = [];
@@ -110,6 +110,7 @@ TAREAS:
 */
 
 
+
 /*
 ========================================
 ¿QUÉ DEVUELVE LA API?
@@ -130,6 +131,8 @@ Ejemplo:
   }
 ]
 
+
+
 ========================================
 ¿CÓMO ACCEDER A LOS DATOS?
 ========================================
@@ -142,17 +145,16 @@ product.image
 ========================================
 EJEMPLO RECORRIENDO PRODUCTOS
 ========================================
-
+*/
 products.forEach(product => {
 
-  console.log(product.title);
+  renderProducts(product) ;
 
 });
 
-*/
 
 
-function getProducts(){
+function getProducts() {
 
   // TODO
 
@@ -182,6 +184,8 @@ Usar:
 - appendChild
 */
 
+console.log(products[1].title)
+
 
 /*
 ========================================
@@ -202,7 +206,38 @@ productsContainer.appendChild(card);
 */
 
 
-function renderProducts(productsArray){
+function renderProducts(product) {
+  productsContainer.innerHTML +=
+    `   
+    <article class="product-card">
+        <div class="product-image">
+          <img
+            src="${product.image}"
+            alt="${product.title}"
+          >
+        </div>
+        <div class="product-info">
+          <p class="product-category">
+            ${product.category}
+          </p>
+          <h3 class="product-title">
+            ${product.title}
+          </h3>
+          <p class="product-price">
+            ${product.price}
+          </p>
+          <div class="card-actions">
+            <button class="add-btn">
+            </button>
+            <button class="fav-btn">
+              🤍
+            </button>
+          </div>
+        </div>
+      </article>
+      `;
+       console.log(card)
+ // productsContainer.appendChild(card);
 
   // TODO
 
@@ -226,9 +261,9 @@ PISTA:
 new Set()
 */
 
-function renderCategories(productsArray){
+function renderCategories(productsArray) {
 
-  // TODO
+
 
 }
 
@@ -256,7 +291,7 @@ PISTA:
 - localeCompare()
 */
 
-function filterProducts(){
+function filterProducts() {
 
   // TODO
 
@@ -299,7 +334,7 @@ TAREAS:
 - Renderizar carrito
 */
 
-function addToCart(id){
+function addToCart(id) {
 
   // TODO
 
@@ -311,7 +346,7 @@ OBJETIVO:
 Eliminar producto del carrito.
 */
 
-function removeFromCart(id){
+function removeFromCart(id) {
 
   // TODO
 
@@ -329,7 +364,7 @@ MOSTRAR:
 - Total carrito
 */
 
-function renderCart(){
+function renderCart() {
 
   // TODO
 
@@ -355,7 +390,7 @@ PISTA:
 JSON.stringify()
 */
 
-function saveCart(){
+function saveCart() {
 
   // TODO
 
@@ -370,7 +405,7 @@ PISTA:
 JSON.parse()
 */
 
-function loadCart(){
+function loadCart() {
 
   // TODO
 
@@ -399,14 +434,14 @@ TAREAS:
 - Recuperar favoritos
 */
 
-function toggleFavorite(id){
+function toggleFavorite(id) {
 
   // TODO
 
 }
 
 
-function loadFavorites(){
+function loadFavorites() {
 
   // TODO
 
@@ -479,7 +514,7 @@ TAREAS:
 - Mostrar login si no existe
 */
 
-function checkSession(){
+function checkSession() {
 
   // TODO
 
@@ -495,7 +530,7 @@ TAREAS:
 - Cerrar modal
 */
 
-function logout(){
+function logout() {
 
   // TODO
 
@@ -573,7 +608,7 @@ TAREAS:
 - Comprobar sesión
 */
 
-function init(){
+function init() {
 
   // TODO
 
