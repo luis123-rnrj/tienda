@@ -66,13 +66,13 @@ const closeLogin =
 const loginForm =
   document.getElementById("loginForm");
 
-
+const card = document.createElement("product-card");
 // ========================================
 // VARIABLES GLOBALES
 // ========================================
 
 // Productos API
-let products = [];
+//let products = [];
 
 // Productos filtrados
 let filteredProducts = [];
@@ -176,6 +176,8 @@ Ejemplo:
   }
 ]
 
+
+
 ========================================
 ¿CÓMO ACCEDER A LOS DATOS?
 ========================================
@@ -188,14 +190,13 @@ product.image
 ========================================
 EJEMPLO RECORRIENDO PRODUCTOS
 ========================================
-
+*/
 products.forEach(product => {
 
-  console.log(product.title);
+  renderProducts(product) ;
 
 });
 
-*/
 
 
 //function getProducts() {
@@ -228,6 +229,8 @@ Usar:
 - appendChild
 */
 
+console.log(products[1].title)
+
 
 /*
 ========================================
@@ -247,12 +250,44 @@ productsContainer.appendChild(card);
 ========================================
 */
 
-
-//function renderProducts(productsArray) {
+/*
+function renderProducts(product) {
+  productsContainer.innerHTML +=
+    `   
+    <article class="product-card">
+        <div class="product-image">
+          <img
+            src="${product.image}"
+            alt="${product.title}"
+          >
+        </div>
+        <div class="product-info">
+          <p class="product-category">
+            ${product.category}
+          </p>
+          <h3 class="product-title">
+            ${product.title}
+          </h3>
+          <p class="product-price">
+            ${product.price}
+          </p>
+          <div class="card-actions">
+            <button class="add-btn">
+            </button>
+            <button class="fav-btn">
+              🤍
+            </button>
+          </div>
+        </div>
+      </article>
+      `;
+       console.log(card)
+ // productsContainer.appendChild(card);
 
   // TODO
 
-//}
+}
+  */
 
 
 // ========================================
@@ -274,7 +309,7 @@ new Set()
 
 function renderCategories(productsArray) {
 
-  // TODO
+
 
 }
 
@@ -301,6 +336,7 @@ PISTA:
 - sort()
 - localeCompare()
 */
+
 
 function filterProducts() {
 
@@ -345,6 +381,7 @@ TAREAS:
 - Renderizar carrito
 */
 
+
 function addToCart(id) {
 
   // TODO
@@ -356,6 +393,7 @@ function addToCart(id) {
 OBJETIVO:
 Eliminar producto del carrito.
 */
+
 
 function removeFromCart(id) {
 
@@ -374,6 +412,7 @@ MOSTRAR:
 - Precio
 - Total carrito
 */
+
 
 function renderCart() {
 
@@ -401,6 +440,7 @@ PISTA:
 JSON.stringify()
 */
 
+
 function saveCart() {
 
   // TODO
@@ -415,6 +455,7 @@ Recuperar carrito guardado.
 PISTA:
 JSON.parse()
 */
+
 
 function loadCart() {
 
@@ -445,11 +486,13 @@ TAREAS:
 - Recuperar favoritos
 */
 
+
 function toggleFavorite(id) {
 
   // TODO
 
 }
+
 
 
 function loadFavorites() {
@@ -541,6 +584,7 @@ TAREAS:
 - Cerrar modal
 */
 
+
 function logout() {
 
   // TODO
@@ -618,6 +662,7 @@ TAREAS:
 - Cargar favoritos
 - Comprobar sesión
 */
+
 
 function init() {
 
