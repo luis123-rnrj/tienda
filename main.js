@@ -108,6 +108,51 @@ TAREAS:
 - Pintar productos
 - Pintar categorías
 */
+function getProducts() {
+   
+  let url = "https://fakestoreapi.com/products";
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      renderProducts(data);
+      renderCategories(data);
+      //console.log(data);
+    })
+    .catch(error => console.error("Hubo un error en la Tienda ", error))
+   
+}
+
+function renderProducts(productsArray) {
+  const productsContainer = document.querySelector("#productsContainer");
+  productsContainer.innerHTML = "";
+  productsArray.forEach(articulo => montarProducts(articulo));
+}
+
+
+// Creamos el HTML dinámico usando los datos que nos da la API
+function montarProducts(producto) {
+  const productsContainer = document.querySelector("#productsContainer");
+  productsContainer.innerHTML += `
+      <article class="product-card">
+        <div class="product-image">
+          <img src="${producto.image}" alt="${producto.title}">
+        </div>
+        <div class="product-info">
+          <p class="product-category">${producto.category}</p>
+          <h3 class="product-title">${producto.title}</h3>
+          <p class="product-price">${producto.price}€</p>
+          <div class="card-actions">
+            <button class="add-btn">Añadir</button>
+            <button class="fav-btn">🤍</button>
+          </div>
+        </div>
+      </article>
+    `;
+
+}
+
+getProducts();
+
 
 
 
@@ -154,11 +199,11 @@ products.forEach(product => {
 
 
 
-function getProducts() {
+//function getProducts() {
 
   // TODO
 
-}
+//}
 
 
 // ========================================
@@ -205,7 +250,7 @@ productsContainer.appendChild(card);
 ========================================
 */
 
-
+/*
 function renderProducts(product) {
   productsContainer.innerHTML +=
     `   
@@ -242,6 +287,7 @@ function renderProducts(product) {
   // TODO
 
 }
+  */
 
 
 // ========================================
@@ -291,6 +337,7 @@ PISTA:
 - localeCompare()
 */
 
+
 function filterProducts() {
 
   // TODO
@@ -334,6 +381,7 @@ TAREAS:
 - Renderizar carrito
 */
 
+
 function addToCart(id) {
 
   // TODO
@@ -345,6 +393,7 @@ function addToCart(id) {
 OBJETIVO:
 Eliminar producto del carrito.
 */
+
 
 function removeFromCart(id) {
 
@@ -363,6 +412,7 @@ MOSTRAR:
 - Precio
 - Total carrito
 */
+
 
 function renderCart() {
 
@@ -390,6 +440,7 @@ PISTA:
 JSON.stringify()
 */
 
+
 function saveCart() {
 
   // TODO
@@ -404,6 +455,7 @@ Recuperar carrito guardado.
 PISTA:
 JSON.parse()
 */
+
 
 function loadCart() {
 
@@ -434,11 +486,13 @@ TAREAS:
 - Recuperar favoritos
 */
 
+
 function toggleFavorite(id) {
 
   // TODO
 
 }
+
 
 
 function loadFavorites() {
@@ -530,6 +584,7 @@ TAREAS:
 - Cerrar modal
 */
 
+
 function logout() {
 
   // TODO
@@ -607,6 +662,7 @@ TAREAS:
 - Cargar favoritos
 - Comprobar sesión
 */
+
 
 function init() {
 
