@@ -109,7 +109,7 @@ TAREAS:
 - Pintar categorías
 */
 function getProducts() {
-   
+
   let url = "https://fakestoreapi.com/products";
   fetch(url)
     .then(response => response.json())
@@ -119,7 +119,7 @@ function getProducts() {
       //console.log(data);
     })
     .catch(error => console.error("Hubo un error en la Tienda ", error))
-   
+
 }
 
 function renderProducts(productsArray) {
@@ -191,17 +191,17 @@ product.image
 EJEMPLO RECORRIENDO PRODUCTOS
 ========================================
 */
-products.forEach(product => {
+// products.forEach(product => {
 
-  renderProducts(product) ;
+//   renderProducts(product);
 
-});
+// });
 
 
 
 //function getProducts() {
 
-  // TODO
+// TODO
 
 //}
 
@@ -229,7 +229,7 @@ Usar:
 - appendChild
 */
 
-console.log(products[1].title)
+
 
 
 /*
@@ -309,14 +309,14 @@ new Set()
 
 function renderCategories(productsArray) {
   console.log(productsArray);
-const categoriesSelect = document.querySelector("#categoryFilter");
-if (!categoriesSelect) return;
-categoriesSelect.innerHTML = "";  // Limpiar opciones anteriores
-const categoriesUnicas= [...new Set(productsArray.map(producto => producto.category))];
+  const categoriesSelect = document.querySelector("#categoryFilter");
+  if (!categoriesSelect) return;
+  categoriesSelect.innerHTML = "";  // Limpiar opciones anteriores
+  const categoriesUnicas = [...new Set(productsArray.map(producto => producto.category))];
   // Crear las opciones y añadirlas al select de una sola vez
- categoriesSelect.innerHTML = categoriesUnicas
+  categoriesSelect.innerHTML = categoriesUnicas
     .map(categoria => `<option value="${categoria}">${categoria}</option>`)
-    .join(""); 
+    .join("");
 }
 
 
@@ -345,9 +345,40 @@ PISTA:
 
 
 function filterProducts() {
+  //console.log(categoryFilter.value)
+  //console.log(sortSelect.value);
+  let opcionCategoria = categoryFilter.value;
+  let opcionOrden = sortSelect.value;
+  productsContainer.innerHTML = "";
+  const busqueda = searchInput.value.toLowerCase();
+  //console.log(busqueda)
+  let url = "https://fakestoreapi.com/products";
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const productosFiltrados = data.filter(product =>
+        product.title.toLowerCase().includes(busqueda) && product.category === opcionCategoria
+      );
 
-  // TODO
-
+      if (opcionOrden === "priceAsc") {
+        productosFiltrados.sort((a, b) => a.price - b.price);
+        // console.log("precio ascendente")
+      }
+      //console.log(data)
+      if (opcionOrden === "priceDesc") {
+        productosFiltrados.sort((a, b) => b.price - a.price);
+        // console.log("precio descendete")
+      }
+      if (opcionOrden === "az") {
+        //console.log(productosFiltrados);
+        productosFiltrados.sort((a, b) => a.title.localeCompare(b.title));
+      }
+      if (opcionOrden === "za") {
+        productosFiltrados.sort((a, b) => b.title.localeCompare(a.title));
+      }
+      renderProducts(productosFiltrados);
+    })
+    .catch(error => console.error("Hubo un error en la Tienda ", error));
 }
 
 
