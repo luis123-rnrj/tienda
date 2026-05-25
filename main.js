@@ -308,9 +308,15 @@ new Set()
 */
 
 function renderCategories(productsArray) {
-
-
-
+  console.log(productsArray);
+const categoriesSelect = document.querySelector("#categoryFilter");
+if (!categoriesSelect) return;
+categoriesSelect.innerHTML = "";  // Limpiar opciones anteriores
+const categoriesUnicas= [...new Set(productsArray.map(producto => producto.category))];
+  // Crear las opciones y añadirlas al select de una sola vez
+ categoriesSelect.innerHTML = categoriesUnicas
+    .map(categoria => `<option value="${categoria}">${categoria}</option>`)
+    .join(""); 
 }
 
 
