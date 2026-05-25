@@ -309,14 +309,14 @@ new Set()
 
 function renderCategories(productsArray) {
   console.log(productsArray);
-const categoriesSelect = document.querySelector("#categoryFilter");
-if (!categoriesSelect) return;
-categoriesSelect.innerHTML = "";  // Limpiar opciones anteriores
-const categoriesUnicas= [...new Set(productsArray.map(producto => producto.category))];
+  const categoriesSelect = document.querySelector("#categoryFilter");
+  if (!categoriesSelect) return;
+  categoriesSelect.innerHTML = "";  // Limpiar opciones anteriores
+  const categoriesUnicas = [...new Set(productsArray.map(producto => producto.category))];
   // Crear las opciones y añadirlas al select de una sola vez
- categoriesSelect.innerHTML = categoriesUnicas
+  categoriesSelect.innerHTML = categoriesUnicas
     .map(categoria => `<option value="${categoria}">${categoria}</option>`)
-    .join(""); 
+    .join("");
 }
 
 
@@ -345,29 +345,32 @@ PISTA:
 
 
 function filterProducts() {
-  console.log(sortSelect.value);
+  //console.log(categoryFilter.value)
+  //console.log(sortSelect.value);
+  let opcionCategoria = categoryFilter.value;
   let opcionOrden = sortSelect.value;
   productsContainer.innerHTML = "";
   const busqueda = searchInput.value.toLowerCase();
-  console.log(busqueda)
+  //console.log(busqueda)
   let url = "https://fakestoreapi.com/products";
   fetch(url)
     .then(response => response.json())
     .then(data => {
       const productosFiltrados = data.filter(product =>
-        product.title.toLowerCase().includes(busqueda)
+        product.title.toLowerCase().includes(busqueda) && product.category === opcionCategoria
       );
+
       if (opcionOrden === "priceAsc") {
         productosFiltrados.sort((a, b) => a.price - b.price);
-        console.log("precio ascendente")
+        // console.log("precio ascendente")
       }
-      console.log(data)
+      //console.log(data)
       if (opcionOrden === "priceDesc") {
         productosFiltrados.sort((a, b) => b.price - a.price);
-        console.log("precio descendete")
+        // console.log("precio descendete")
       }
       if (opcionOrden === "az") {
-        console.log(productosFiltrados);
+        //console.log(productosFiltrados);
         productosFiltrados.sort((a, b) => a.title.localeCompare(b.title));
       }
       if (opcionOrden === "za") {
