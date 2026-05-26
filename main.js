@@ -138,6 +138,10 @@ function renderProducts(productsArray) {
 
 // Creamos el HTML dinámico usando los datos que nos da la API
 function montarProducts(producto) {
+  const favoritos = loadFavorites();
+  //console.log(favoritos)
+  //console.log("Producto id" + producto.id)
+  const iconoCorazon = favoritos.includes(producto.id) ? "❤️" : "🤍";
   const productsContainer = document.querySelector("#productsContainer");
   productsContainer.innerHTML += `
       <article class="product-card">
@@ -150,7 +154,7 @@ function montarProducts(producto) {
           <p class="product-price">${producto.price}€</p>
           <div class="card-actions">
             <button class="add-btn" onclick="addToCart(${producto.id})" >Añadir</button>
-            <button class="fav-btn">🤍</button>
+            <button class="fav-btn" onclick = "toggleFavorite(${producto.id})" >${iconoCorazon}</button>
           </div>
         </div>
       </article>
@@ -314,7 +318,7 @@ new Set()
 */
 
 function renderCategories(productsArray) {
-  console.log(productsArray);
+  //console.log(productsArray);
   const categoriesSelect = document.querySelector("#categoryFilter");
   if (!categoriesSelect) return;
   categoriesSelect.innerHTML = "";  // Limpiar opciones anteriores
@@ -584,15 +588,26 @@ TAREAS:
 
 
 function toggleFavorite(id) {
+  //console.log("Favorito id" + id)
+  let arrayFavoritos = loadFavorites();
+  const index = arrayFavoritos.indexOf(id);
+  if (index !== -1) {
+    arrayFavoritos.splice(index, 1);
+    //console.log(`Eliminado ID ${id} de favoritos`);
 
-  // TODO
-
+    event.target.textContent = "🤍";
+  } else {
+    arrayFavoritos.push(id);
+    //console.log(`Añadido ID ${id} a favoritos`);
+    event.target.textContent = "❤️";
+  }
+  localStorage.setItem("favoritos", JSON.stringify(arrayFavoritos));
 }
 
 
-
 function loadFavorites() {
-
+  const favs = localStorage.getItem("favoritos");
+  return favs ? JSON.parse(favs) : [];
   // TODO
 
 }
