@@ -66,22 +66,27 @@ const closeLogin =
 const loginForm =
   document.getElementById("loginForm");
 
-const card = document.createElement("product-card");
+//const card = document.createElement("product-card");
 // ========================================
 // VARIABLES GLOBALES
 // ========================================
 
 // Productos API
 //let products = [];
+// Productos totales
+let allProducts = [];
 
 // Productos filtrados
 let filteredProducts = [];
 
 // Carrito
 let cart = [];
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 // Favoritos
 let favorites = [];
+
+
 
 
 // ========================================
@@ -114,9 +119,11 @@ function getProducts() {
   fetch(url)
     .then(response => response.json())
     .then(data => {
+       allProducts = data;
+      renderProducts(filteredProducts);
       renderProducts(data);
       renderCategories(data);
-      //console.log(data);
+      renderCart();
     })
     .catch(error => console.error("Hubo un error en la Tienda ", error))
 
@@ -146,7 +153,7 @@ function montarProducts(producto) {
           <h3 class="product-title">${producto.title}</h3>
           <p class="product-price">${producto.price}€</p>
           <div class="card-actions">
-            <button class="add-btn">Añadir</button>
+            <button class="add-btn" onclick="addToCart(${producto.id})" >Añadir</button>
             <button class="fav-btn" onclick = "toggleFavorite(${producto.id})" >${iconoCorazon}</button>
           </div>
         </div>
@@ -156,7 +163,6 @@ function montarProducts(producto) {
 }
 
 getProducts();
-
 
 
 
@@ -422,27 +428,58 @@ TAREAS:
 - Renderizar carrito
 */
 
-
 function addToCart(id) {
+  if (!allProducts || allProducts.length === 0) {
+    console.error("Productos aún no cargados");
+    return;
+  }
 
-  // TODO
+  //console.log("Intentando agregar ID:", id);
+  //console.log("Lista de productos disponibles actualmente en memoria:", allProducts);
 
+  //const productoEncontrado = products.find(prod => prod.id === id);
+  const productoEncontrado = allProducts.find(prod => Number(prod.id) === Number(id));
+  if (!productoEncontrado) {
+    console.error("Producto no encontrado en el array 'products'. ID buscado:", id); // Si entra aquí, es porque el ID que elegiste NO EXISTE dentro del array 'products'
+    return;
+  }
+
+  const existeEnCarrito = carrito.some(item => Number(item.id) === Number(id));
+
+  if (existeEnCarrito) {
+    carrito = carrito.map(item =>
+      item.id === id
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+  } else {
+    carrito.push({
+      ...productoEncontrado,
+      quantity: 1
+    });
+  }
+
+  guardarCarrito();
+  renderCart();
+  console.log("¡Producto agregado con éxito!", productoEncontrado);
 }
-
 
 /*
 OBJETIVO:
 Eliminar producto del carrito.
 */
-
-
-function removeFromCart(id) {
-
-  // TODO
-
+function guardarCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-
+function removeFromCart(id) {
+  const index = carrito.findIndex(item => item.id === id);
+  if (index !== -1) {
+    carrito.splice(index, 1);
+    guardarCarrito();
+    renderCart();
+  }
+}
 /*
 OBJETIVO:
 Pintar carrito dinámicamente.
@@ -454,13 +491,35 @@ MOSTRAR:
 - Total carrito
 */
 
-
 function renderCart() {
+  const cartContainer = document.getElementById("cartContainer");
+  const cartTotal = document.getElementById("cartTotal");
 
-  // TODO
+  if (!cartContainer || !cartTotal) return;
 
+  cartContainer.innerHTML = "";
+
+  let totalAcumulado = 0;
+
+  carrito.forEach(item => {
+    totalAcumulado += item.price * item.quantity;
+
+    const cartItem = document.createElement("div");
+    cartItem.classList.add("cart-item");
+
+    cartItem.innerHTML = `
+      <div class="cart-item-info">
+        <p class="cart-item-title">${item.title}</p>
+        <p class="cart-item-price">${item.quantity} x ${item.price.toFixed(2)}€</p>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${item.id})">X</button>
+    `;
+
+    cartContainer.appendChild(cartItem);
+  });
+
+  cartTotal.textContent = `${totalAcumulado.toFixed(2)}€`;
 }
-
 
 // ========================================
 // FASE 4 - LOCAL STORAGE
@@ -659,7 +718,8 @@ EXTRA
 OBJETIVO:
 Abrir modal login.
 */
-
+/*
+console.log(accountBtn)
 accountBtn.addEventListener(
   "click",
   () => {
@@ -668,7 +728,7 @@ accountBtn.addEventListener(
 
   }
 );
-
+*/
 
 /*
 OBJETIVO:
