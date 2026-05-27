@@ -56,7 +56,7 @@ const loginModal =
 
 // Botón abrir login
 const accountBtn =
-  document.querySelector(".account-btn");
+  document.querySelector(".cart-btn");
 
 // Botón cerrar login
 const closeLogin =
@@ -65,6 +65,9 @@ const closeLogin =
 // Formulario login
 const loginForm =
   document.getElementById("loginForm");
+
+const loginOut =
+  document.querySelector(".logout-btn");
 
 //const card = document.createElement("product-card");
 // ========================================
@@ -86,9 +89,23 @@ let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 // Favoritos
 let favorites = [];
 
-
-
-
+//Comprobar si existe tokens
+const miToken = localStorage.getItem("tokens");
+let existeTokens
+if (miToken === null) {
+  existeTokens = false;
+  //console.log("no existe"); 
+} else {
+  existeTokens = true;
+  const datos = JSON.parse(miToken);
+//accountBtn.setAttribute("href", "perfil.html")
+  // 4. Extraemos el nombre de usuario
+  const nombre = datos.username;
+  accountBtn.innerHTML = nombre;
+  loginOut.classList.remove('hidden');
+  //window.location.href= "perfil.html"
+  //console.log("existe");  
+}
 // ========================================
 // FASE 1 - FETCH PRODUCTOS
 // ========================================
@@ -119,7 +136,7 @@ function getProducts() {
   fetch(url)
     .then(response => response.json())
     .then(data => {
-       allProducts = data;
+      allProducts = data;
       renderProducts(filteredProducts);
       renderProducts(data);
       renderCategories(data);
@@ -650,8 +667,31 @@ TAREAS:
 loginForm.addEventListener(
   "submit",
   (e) => {
+    const nombreUsuario = document.getElementById("username");
+    const passwordUsuario = document.getElementById("password");
+    //console.log("usuario"+ nombreUsuario.value)
+    //console.log("password"+ passwordUsuario.value)
+    const credenciales = { username: nombreUsuario.value, password: passwordUsuario.value };
+    fetch('https://fakestoreapi.com/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credenciales)
+    })
+      .then(response => response.json())
+      .then(data => {
+        const datosSesion = { ...data, username: credenciales.username };
+        localStorage.setItem("tokens", JSON.stringify(datosSesion))
+        //console.log(data)
+        loginModal.classList.add('hidden');
+        existeTokens = true;
+        accountBtn.innerHTML = credenciales.username;
+        
+        loginOut.classList.remove('hidden');
+
+      });
 
     e.preventDefault();
+    console.log("inicio sesion correcto")
 
     // TODO
 
@@ -694,11 +734,17 @@ TAREAS:
 - Eliminar token
 - Cerrar modal
 */
-
+loginOut.addEventListener(
+  "click",
+  () => {
+    existeTokens = false;
+    localStorage.removeItem("tokens");
+    loginOut.classList.add('hidden');
+    accountBtn.innerHTML = "Mi cuenta";
+  }
+)
 
 function logout() {
-
-  // TODO
 
 }
 
@@ -718,17 +764,15 @@ EXTRA
 OBJETIVO:
 Abrir modal login.
 */
-/*
-console.log(accountBtn)
 accountBtn.addEventListener(
   "click",
   () => {
-
+    if (!existeTokens) {
+      loginModal.classList.remove('hidden');
+    } else window.location.href= "perfil.html"
     // TODO
-
   }
 );
-*/
 
 /*
 OBJETIVO:
@@ -738,7 +782,7 @@ Cerrar modal login.
 closeLogin.addEventListener(
   "click",
   () => {
-
+    loginModal.classList.add('hidden');
     // TODO
 
   }
@@ -753,7 +797,9 @@ Cerrar modal clicando fuera.
 loginModal.addEventListener(
   "click",
   (e) => {
-
+    if (e.target === loginModal) {
+      loginModal.classList.add('hidden');
+    }
     // TODO
 
   }
