@@ -737,6 +737,7 @@ TAREAS:
 loginOut.addEventListener(
   "click",
   () => {
+    console.log("cerrando sesion ...")
     existeTokens = false;
     localStorage.removeItem("tokens");
     loginOut.classList.add('hidden');
@@ -770,7 +771,6 @@ accountBtn.addEventListener(
     if (!existeTokens) {
       loginModal.classList.remove('hidden');
     } else window.location.href= "perfil.html"
-    // TODO
   }
 );
 
