@@ -66,6 +66,9 @@ const closeLogin =
 const loginForm =
   document.getElementById("loginForm");
 
+const loginOut =
+  document.querySelector(".logout-btn");
+
 //const card = document.createElement("product-card");
 // ========================================
 // VARIABLES GLOBALES
@@ -94,12 +97,13 @@ if (miToken === null) {
   //console.log("no existe"); 
 } else {
   existeTokens = true;
-    const datos = JSON.parse(miToken);
-  
+  const datos = JSON.parse(miToken);
+//accountBtn.setAttribute("href", "perfil.html")
   // 4. Extraemos el nombre de usuario
   const nombre = datos.username;
   accountBtn.innerHTML = nombre;
-
+  loginOut.classList.remove('hidden');
+  //window.location.href= "perfil.html"
   //console.log("existe");  
 }
 // ========================================
@@ -681,6 +685,8 @@ loginForm.addEventListener(
         loginModal.classList.add('hidden');
         existeTokens = true;
         accountBtn.innerHTML = credenciales.username;
+        
+        loginOut.classList.remove('hidden');
 
       });
 
@@ -728,11 +734,17 @@ TAREAS:
 - Eliminar token
 - Cerrar modal
 */
-
+loginOut.addEventListener(
+  "click",
+  () => {
+    existeTokens = false;
+    localStorage.removeItem("tokens");
+    loginOut.classList.add('hidden');
+    accountBtn.innerHTML = "Mi cuenta";
+  }
+)
 
 function logout() {
-
-  // TODO
 
 }
 
@@ -755,8 +767,9 @@ Abrir modal login.
 accountBtn.addEventListener(
   "click",
   () => {
-    loginModal.classList.remove('hidden');
-
+    if (!existeTokens) {
+      loginModal.classList.remove('hidden');
+    } else window.location.href= "perfil.html"
     // TODO
   }
 );
